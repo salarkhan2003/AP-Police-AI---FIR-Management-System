@@ -342,8 +342,8 @@ export default function DashboardPage() {
           animate={{ y: 0 }}
           className="sticky top-0 glass-strong border-b border-white/10 z-30"
         >
-          <div className="px-6 py-4 flex items-center justify-between">
-            <div className="flex items-center gap-4">
+          <div className="px-3 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
+            <div className="flex items-center gap-2 sm:gap-4">
               {/* Mobile Menu Button */}
               <button
                 onClick={() => setShowMobileMenu(true)}
@@ -352,27 +352,27 @@ export default function DashboardPage() {
                 <Menu className="w-5 h-5" />
               </button>
 
-              {/* Search */}
-              <div className="hidden md:block relative">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              {/* Search - Hidden on small mobile */}
+              <div className="hidden sm:block relative">
+                <Search className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 w-4 sm:w-5 h-4 sm:h-5 text-gray-400" />
                 <input
                   type="text"
-                  placeholder="Search cases, complainants..."
-                  className="w-96 pl-12 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-blue-500"
+                  placeholder="Search cases..."
+                  className="w-40 sm:w-64 md:w-96 pl-9 sm:pl-12 pr-3 sm:pr-4 py-2 sm:py-3 bg-white/5 border border-white/10 rounded-xl text-white text-sm placeholder-gray-500 focus:outline-none focus:border-blue-500"
                 />
               </div>
             </div>
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 sm:gap-4">
               {/* Quick Actions */}
               <Link href="/fir/create">
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="hidden md:flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-semibold rounded-xl shadow-lg hover:shadow-blue-500/50"
+                  className="flex items-center gap-1 sm:gap-2 px-3 sm:px-5 py-2 sm:py-2.5 bg-gradient-to-r from-blue-500 to-cyan-500 text-white text-sm font-semibold rounded-xl shadow-lg hover:shadow-blue-500/50"
                 >
-                  <Plus className="w-5 h-5" />
-                  New FIR
+                  <Plus className="w-4 sm:w-5 h-4 sm:h-5" />
+                  <span className="hidden sm:inline">New FIR</span>
                 </motion.button>
               </Link>
 
@@ -408,41 +408,41 @@ export default function DashboardPage() {
         </motion.header>
 
         {/* Dashboard Content */}
-        <main className="p-6 space-y-6">
+        <main className="p-3 sm:p-6 space-y-4 sm:space-y-6 pb-24 sm:pb-6">
           {/* Welcome Banner */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="glass-strong p-8 rounded-3xl relative overflow-hidden"
+            className="glass-strong p-4 sm:p-8 rounded-2xl sm:rounded-3xl relative overflow-hidden"
           >
             <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20" />
             <div className="relative z-10">
-              <h1 className="text-3xl font-black mb-2">
-                Welcome back, <span className="text-gradient">{userName}</span> 👋
+              <h1 className="text-xl sm:text-3xl font-black mb-2">
+                Welcome, <span className="text-gradient">{userName}</span> 👋
               </h1>
-              <p className="text-gray-400 mb-6">
-                You have <span className="text-yellow-400 font-semibold">12 pending approvals</span> and{' '}
-                <span className="text-red-400 font-semibold">2 overdue cases</span> requiring attention.
+              <p className="text-sm sm:text-base text-gray-400 mb-4 sm:mb-6">
+                You have <span className="text-yellow-400 font-semibold">12 pending</span> and{' '}
+                <span className="text-red-400 font-semibold">2 overdue</span> cases.
               </p>
-              <div className="flex flex-wrap gap-3">
+              <div className="flex flex-wrap gap-2 sm:gap-3">
                 <Link href="/fir/create">
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-bold rounded-xl flex items-center gap-2 shadow-lg"
+                    className="px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-blue-500 to-cyan-500 text-white text-sm sm:text-base font-bold rounded-xl flex items-center gap-2 shadow-lg"
                   >
-                    <Plus className="w-5 h-5" />
-                    File New FIR
+                    <Plus className="w-4 sm:w-5 h-4 sm:h-5" />
+                    File FIR
                   </motion.button>
                 </Link>
                 <Link href="/fir/approvals">
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="px-6 py-3 glass text-white font-bold rounded-xl flex items-center gap-2"
+                    className="px-4 sm:px-6 py-2.5 sm:py-3 glass text-white text-sm sm:text-base font-bold rounded-xl flex items-center gap-2"
                   >
-                    <Clock className="w-5 h-5 text-yellow-400" />
-                    View Pending
+                    <Clock className="w-4 sm:w-5 h-4 sm:h-5 text-yellow-400" />
+                    Pending
                   </motion.button>
                 </Link>
               </div>
@@ -450,7 +450,7 @@ export default function DashboardPage() {
           </motion.div>
 
           {/* Stats Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
             {stats.map((stat, index) => (
               <motion.div
                 key={stat.title}
@@ -458,38 +458,38 @@ export default function DashboardPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
                 whileHover={{ y: -4, boxShadow: '0 20px 40px rgba(0,0,0,0.3)' }}
-                className="glass-strong p-6 rounded-2xl cursor-pointer"
+                className="glass-strong p-3 sm:p-6 rounded-xl sm:rounded-2xl cursor-pointer"
               >
-                <div className="flex items-start justify-between mb-4">
-                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${stat.color} flex items-center justify-center`}>
-                    <stat.icon className="w-6 h-6 text-white" />
+                <div className="flex items-start justify-between mb-2 sm:mb-4">
+                  <div className={`w-8 sm:w-12 h-8 sm:h-12 rounded-lg sm:rounded-xl bg-gradient-to-br ${stat.color} flex items-center justify-center`}>
+                    <stat.icon className="w-4 sm:w-6 h-4 sm:h-6 text-white" />
                   </div>
-                  <div className={`flex items-center gap-1 text-sm ${stat.trend === 'up' ? 'text-green-400' : 'text-red-400'}`}>
-                    {stat.trend === 'up' ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
-                    <span>{stat.trendValue}</span>
+                  <div className={`hidden sm:flex items-center gap-1 text-xs sm:text-sm ${stat.trend === 'up' ? 'text-green-400' : 'text-red-400'}`}>
+                    {stat.trend === 'up' ? <TrendingUp className="w-3 sm:w-4 h-3 sm:h-4" /> : <TrendingDown className="w-3 sm:w-4 h-3 sm:h-4" />}
+                    <span className="hidden md:inline">{stat.trendValue}</span>
                   </div>
                 </div>
-                <div className="text-3xl font-black mb-1">
+                <div className="text-xl sm:text-3xl font-black mb-0.5 sm:mb-1">
                   {animatedStats[stat.title] ?? 0}
-                  {stat.suffix && <span className="text-xl text-gray-400">{stat.suffix}</span>}
+                  {stat.suffix && <span className="text-sm sm:text-xl text-gray-400">{stat.suffix}</span>}
                 </div>
-                <div className="text-sm text-gray-400">{stat.title}</div>
+                <div className="text-xs sm:text-sm text-gray-400 truncate">{stat.title}</div>
               </motion.div>
             ))}
           </div>
 
           {/* Main Grid */}
-          <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 sm:gap-6">
             {/* Pending Cases - 2 columns */}
-            <div className="xl:col-span-2 space-y-6">
+            <div className="xl:col-span-2 space-y-4 sm:space-y-6">
               <div className="flex items-center justify-between">
-                <h2 className="text-2xl font-bold">Recent FIRs</h2>
-                <Link href="/fir/cases" className="text-blue-400 hover:text-blue-300 flex items-center gap-1">
+                <h2 className="text-lg sm:text-2xl font-bold">Recent FIRs</h2>
+                <Link href="/fir/cases" className="text-blue-400 hover:text-blue-300 flex items-center gap-1 text-sm">
                   View All <ChevronRight className="w-4 h-4" />
                 </Link>
               </div>
 
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 {recentFIRs.map((fir, index) => (
                   <motion.div
                     key={fir.id}
@@ -497,46 +497,46 @@ export default function DashboardPage() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.1 }}
                     whileHover={{ y: -2 }}
-                    className="glass-strong p-5 rounded-2xl cursor-pointer group"
+                    className="glass-strong p-3 sm:p-5 rounded-xl sm:rounded-2xl cursor-pointer group"
                   >
-                    <div className="flex items-start justify-between mb-3">
-                      <div className="flex items-center gap-3">
+                    <div className="flex flex-wrap items-start justify-between gap-2 mb-2 sm:mb-3">
+                      <div className="flex flex-wrap items-center gap-2">
                         <motion.span
                           animate={fir.priority === 'URGENT' ? { scale: [1, 1.1, 1] } : {}}
                           transition={{ duration: 1, repeat: Infinity }}
-                          className={`px-3 py-1 rounded-full text-xs font-bold border ${getPriorityColor(fir.priority)}`}
+                          className={`px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs font-bold border ${getPriorityColor(fir.priority)}`}
                         >
                           {fir.priority === 'URGENT' && '🔴 '}{fir.priority}
                         </motion.span>
-                        <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(fir.status)}`}>
+                        <span className={`px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs font-medium ${getStatusColor(fir.status)}`}>
                           {fir.status.charAt(0).toUpperCase() + fir.status.slice(1)}
                         </span>
                       </div>
-                      <span className="text-sm text-gray-500">{fir.filedAt}</span>
+                      <span className="text-xs sm:text-sm text-gray-500">{fir.filedAt}</span>
                     </div>
 
-                    <h3 className="text-lg font-bold mb-2 group-hover:text-gradient transition-colors">
+                    <h3 className="text-sm sm:text-lg font-bold mb-1 sm:mb-2 group-hover:text-gradient transition-colors">
                       {fir.caseNumber}
                     </h3>
-                    <p className="text-gray-300 mb-3">{fir.title}</p>
+                    <p className="text-xs sm:text-base text-gray-300 mb-2 sm:mb-3 line-clamp-1">{fir.title}</p>
 
-                    <div className="flex items-center justify-between text-sm text-gray-400">
-                      <div className="flex items-center gap-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs sm:text-sm text-gray-400">
+                      <div className="flex flex-wrap items-center gap-2 sm:gap-4">
                         <span className="flex items-center gap-1">
-                          <User className="w-4 h-4" />
-                          {fir.complainant}
+                          <User className="w-3 sm:w-4 h-3 sm:h-4" />
+                          <span className="truncate max-w-[80px] sm:max-w-none">{fir.complainant}</span>
                         </span>
                         <span className="flex items-center gap-1">
-                          <MapPin className="w-4 h-4" />
-                          {fir.location}
+                          <MapPin className="w-3 sm:w-4 h-3 sm:h-4" />
+                          <span className="truncate max-w-[80px] sm:max-w-none">{fir.location}</span>
                         </span>
                       </div>
-                      <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button className="p-2 glass rounded-lg hover:bg-white/10">
-                          <Eye className="w-4 h-4" />
+                      <div className="flex items-center gap-2 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
+                        <button className="p-1.5 sm:p-2 glass rounded-lg hover:bg-white/10">
+                          <Eye className="w-3 sm:w-4 h-3 sm:h-4" />
                         </button>
-                        <button className="p-2 glass rounded-lg hover:bg-white/10">
-                          <Download className="w-4 h-4" />
+                        <button className="p-1.5 sm:p-2 glass rounded-lg hover:bg-white/10">
+                          <Download className="w-3 sm:w-4 h-3 sm:h-4" />
                         </button>
                       </div>
                     </div>
@@ -546,38 +546,38 @@ export default function DashboardPage() {
             </div>
 
             {/* Activity Feed - 1 column */}
-            <div className="space-y-6">
+            <div className="space-y-4 sm:space-y-6">
               <div className="flex items-center justify-between">
-                <h2 className="text-2xl font-bold">Activity Feed</h2>
+                <h2 className="text-lg sm:text-2xl font-bold">Activity Feed</h2>
                 <button className="text-blue-400 hover:text-blue-300 flex items-center gap-1">
                   <RefreshCw className="w-4 h-4" />
                 </button>
               </div>
 
-              <div className="glass-strong rounded-2xl p-4 space-y-4">
+              <div className="glass-strong rounded-xl sm:rounded-2xl p-3 sm:p-4 space-y-3 sm:space-y-4">
                 {activityFeed.map((activity, index) => (
                   <motion.div
                     key={activity.id}
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.1 }}
-                    className={`p-4 rounded-xl ${
+                    className={`p-3 sm:p-4 rounded-lg sm:rounded-xl ${
                       activity.type === 'alert' ? 'bg-red-500/10 border border-red-500/30' : 'glass'
                     }`}
                   >
-                    <div className="flex items-start gap-3">
-                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
+                    <div className="flex items-start gap-2 sm:gap-3">
+                      <div className={`w-7 sm:w-8 h-7 sm:h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
                         activity.type === 'alert' ? 'bg-red-500/20' : 'bg-white/10'
                       }`}>
                         {getActivityIcon(activity.type)}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className={`font-medium ${activity.type === 'alert' ? 'text-red-400' : 'text-white'}`}>
+                        <p className={`text-sm font-medium ${activity.type === 'alert' ? 'text-red-400' : 'text-white'}`}>
                           {activity.action}
                         </p>
-                        <p className="text-sm text-blue-400 truncate">{activity.caseNumber}</p>
+                        <p className="text-xs sm:text-sm text-blue-400 truncate">{activity.caseNumber}</p>
                         <div className="flex items-center gap-2 text-xs text-gray-500 mt-1">
-                          <span>{activity.officer}</span>
+                          <span className="truncate">{activity.officer}</span>
                           <span>•</span>
                           <span>{activity.time}</span>
                         </div>
@@ -588,14 +588,14 @@ export default function DashboardPage() {
               </div>
 
               {/* Quick Stats */}
-              <div className="glass-strong rounded-2xl p-6">
-                <h3 className="font-bold mb-4">Today&apos;s Summary</h3>
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
+              <div className="glass-strong rounded-xl sm:rounded-2xl p-4 sm:p-6">
+                <h3 className="font-bold mb-3 sm:mb-4 text-sm sm:text-base">Today&apos;s Summary</h3>
+                <div className="space-y-3 sm:space-y-4">
+                  <div className="flex items-center justify-between text-sm">
                     <span className="text-gray-400">FIRs Filed</span>
                     <span className="font-bold text-green-400">+15</span>
                   </div>
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between text-sm">
                     <span className="text-gray-400">Approved</span>
                     <span className="font-bold text-blue-400">12</span>
                   </div>

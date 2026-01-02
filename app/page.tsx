@@ -179,22 +179,22 @@ export default function HomePage() {
         animate={{ y: 0 }}
         className="fixed top-0 w-full glass-strong z-50 border-b border-white/10"
       >
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
+          <div className="flex items-center gap-2 sm:gap-3">
             <motion.div
               whileHover={{ rotate: 360 }}
               transition={{ duration: 0.5 }}
-              className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center"
+              className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center"
             >
-              <Shield className="w-7 h-7 text-white" />
+              <Shield className="w-5 h-5 sm:w-7 sm:h-7 text-white" />
             </motion.div>
             <div>
-              <h1 className="text-xl font-bold text-gradient">AP Police</h1>
-              <p className="text-xs text-gray-400">FIR Management System</p>
+              <h1 className="text-base sm:text-xl font-bold text-gradient">AP Police</h1>
+              <p className="text-xs text-gray-400 hidden sm:block">FIR Management System</p>
             </div>
           </div>
 
-          <nav className="hidden md:flex items-center gap-8">
+          <nav className="hidden lg:flex items-center gap-8">
             <a href="#features" className="text-sm text-gray-400 hover:text-white transition-colors">Features</a>
             <a href="#ai" className="text-sm text-gray-400 hover:text-white transition-colors">AI Powered</a>
             <Link href="/ai-writer" className="text-sm text-purple-400 hover:text-purple-300 transition-colors flex items-center gap-1">
@@ -204,12 +204,12 @@ export default function HomePage() {
             <Link href="/public" className="text-sm text-gray-400 hover:text-white transition-colors">Public Portal</Link>
           </nav>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <Link href="/login">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-5 py-2.5 glass text-white font-semibold rounded-xl"
+                className="px-3 sm:px-5 py-2 sm:py-2.5 glass text-white text-sm font-semibold rounded-lg sm:rounded-xl"
               >
                 Login
               </motion.button>
@@ -218,9 +218,10 @@ export default function HomePage() {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-5 py-2.5 bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-bold rounded-xl shadow-lg hover:shadow-blue-500/50"
+                className="px-3 sm:px-5 py-2 sm:py-2.5 bg-gradient-to-r from-blue-500 to-cyan-500 text-white text-sm font-bold rounded-lg sm:rounded-xl shadow-lg hover:shadow-blue-500/50"
               >
-                Start Now
+                <span className="hidden sm:inline">Start Now</span>
+                <span className="sm:hidden">Start</span>
               </motion.button>
             </Link>
           </div>
@@ -228,7 +229,7 @@ export default function HomePage() {
       </motion.header>
 
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 px-6">
+      <section className="relative pt-24 sm:pt-32 pb-12 sm:pb-20 px-3 sm:px-6">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* Left - Content */}
@@ -248,11 +249,11 @@ export default function HomePage() {
                   transition={{ duration: 2, repeat: Infinity }}
                   className="w-2 h-2 bg-green-400 rounded-full"
                 />
-                <span className="text-sm font-medium">Revolutionary 2-Step FIR Filing</span>
-                <Award className="w-4 h-4 text-yellow-400" />
+                <span className="text-xs sm:text-sm font-medium">Revolutionary 2-Step FIR Filing</span>
+                <Award className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-400" />
               </motion.div>
 
-              <h1 className="text-5xl lg:text-7xl font-black mb-6 leading-tight">
+              <h1 className="text-3xl sm:text-5xl lg:text-7xl font-black mb-4 sm:mb-6 leading-tight">
                 <span className="text-white">File FIR in</span>
                 <br />
                 <span className="text-gradient">40 Seconds</span>
@@ -260,41 +261,41 @@ export default function HomePage() {
                 <span className="text-white">Not Hours</span>
               </h1>
 
-              <p className="text-xl text-gray-300 mb-8 max-w-xl">
+              <p className="text-sm sm:text-xl text-gray-300 mb-6 sm:mb-8 max-w-xl">
                 The most advanced AI-powered FIR management system. Voice-to-text filing,
-                instant digital signatures, real-time tracking, and zero paperwork.
+                instant digital signatures, real-time tracking.
               </p>
 
               {/* CTA Buttons */}
-              <div className="flex flex-wrap gap-4 mb-12">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-8 sm:mb-12">
                 <Link href="/dashboard">
                   <motion.button
                     whileHover={{ scale: 1.05, boxShadow: '0 0 40px rgba(59, 130, 246, 0.5)' }}
                     whileTap={{ scale: 0.95 }}
-                    className="px-8 py-4 bg-gradient-to-r from-blue-500 to-cyan-500 text-white text-lg font-bold rounded-xl flex items-center gap-3 shadow-2xl"
+                    className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-blue-500 to-cyan-500 text-white text-base sm:text-lg font-bold rounded-xl flex items-center justify-center gap-2 sm:gap-3 shadow-2xl"
                   >
-                    <Zap className="w-6 h-6" />
+                    <Zap className="w-5 h-5 sm:w-6 sm:h-6" />
                     Start Filing Now
-                    <ArrowRight className="w-5 h-5" />
+                    <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
                   </motion.button>
                 </Link>
                 <Link href="/ai-writer">
                   <motion.button
                     whileHover={{ scale: 1.05, boxShadow: '0 0 40px rgba(139, 92, 246, 0.5)' }}
                     whileTap={{ scale: 0.95 }}
-                    className="px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-lg font-semibold rounded-xl flex items-center gap-3 shadow-2xl"
+                    className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-base sm:text-lg font-semibold rounded-xl flex items-center justify-center gap-2 sm:gap-3 shadow-2xl"
                   >
-                    <Sparkles className="w-6 h-6" />
-                    Try AI FIR Writer
+                    <Sparkles className="w-5 h-5 sm:w-6 sm:h-6" />
+                    AI FIR Writer
                   </motion.button>
                 </Link>
               </div>
 
               {/* Quick Stats */}
-              <div className="grid grid-cols-3 gap-6">
+              <div className="grid grid-cols-3 gap-3 sm:gap-6">
                 {[
-                  { label: 'Filing Time', value: '40s', icon: Clock },
-                  { label: 'Approval Time', value: '5s', icon: CheckCircle },
+                  { label: 'Filing', value: '40s', icon: Clock },
+                  { label: 'Approval', value: '5s', icon: CheckCircle },
                   { label: 'Languages', value: '4+', icon: Globe }
                 ].map((stat, index) => (
                   <motion.div
@@ -304,9 +305,9 @@ export default function HomePage() {
                     transition={{ delay: 0.3 + index * 0.1 }}
                     className="text-center"
                   >
-                    <div className="text-3xl font-black text-gradient mb-1">{stat.value}</div>
-                    <div className="text-sm text-gray-400 flex items-center justify-center gap-1">
-                      <stat.icon className="w-4 h-4" />
+                    <div className="text-xl sm:text-3xl font-black text-gradient mb-0.5 sm:mb-1">{stat.value}</div>
+                    <div className="text-xs sm:text-sm text-gray-400 flex items-center justify-center gap-1">
+                      <stat.icon className="w-3 h-3 sm:w-4 sm:h-4" />
                       {stat.label}
                     </div>
                   </motion.div>

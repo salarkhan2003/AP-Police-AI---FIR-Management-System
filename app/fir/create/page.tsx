@@ -246,43 +246,43 @@ function CreateFIRPageContent() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0A0E27] text-white pb-20">
+    <div className="min-h-screen bg-[#0A0E27] text-white pb-24 sm:pb-20">
       {/* Header */}
       <motion.header
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         className="fixed top-0 w-full glass-strong z-50 border-b border-white/10"
       >
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <BackButton href="/dashboard" label="Back" />
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 py-3 sm:py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <div className="flex items-center gap-2 sm:gap-4">
+            <BackButton href="/dashboard" label="" />
             <div>
-              <h1 className="text-xl font-bold text-gradient">File New FIR</h1>
-              <p className="text-xs text-gray-400">Ultra-Fast 2-Step Process • ~40 seconds</p>
+              <h1 className="text-base sm:text-xl font-bold text-gradient">File New FIR</h1>
+              <p className="text-xs text-gray-400 hidden sm:block">Ultra-Fast 2-Step Process • ~40 seconds</p>
             </div>
           </div>
 
-          {/* Step Indicator */}
-          <div className="flex items-center gap-3">
-            <div className={`flex items-center gap-2 px-4 py-2 rounded-xl ${currentStep === 1 ? 'bg-gradient-blue text-white' : currentStep > 1 ? 'bg-green-500/20 text-green-400' : 'glass text-gray-400'}`}>
-              <span className="text-sm font-bold">{currentStep > 1 ? '✓' : '1'}</span>
-              <span className="text-sm">Case Input</span>
+          {/* Step Indicator - Compact on mobile */}
+          <div className="flex items-center justify-center gap-1 sm:gap-3 overflow-x-auto">
+            <div className={`flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl ${currentStep === 1 ? 'bg-gradient-blue text-white' : currentStep > 1 ? 'bg-green-500/20 text-green-400' : 'glass text-gray-400'}`}>
+              <span className="text-xs sm:text-sm font-bold">{currentStep > 1 ? '✓' : '1'}</span>
+              <span className="text-xs sm:text-sm hidden sm:inline">Case</span>
             </div>
-            <ChevronRight className="w-4 h-4 text-gray-600" />
-            <div className={`flex items-center gap-2 px-4 py-2 rounded-xl ${currentStep === 2 ? 'bg-gradient-blue text-white' : currentStep > 2 ? 'bg-green-500/20 text-green-400' : 'glass text-gray-400'}`}>
-              <span className="text-sm font-bold">{currentStep > 2 ? '✓' : '2'}</span>
-              <span className="text-sm">Your Sign</span>
+            <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4 text-gray-600 flex-shrink-0" />
+            <div className={`flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl ${currentStep === 2 ? 'bg-gradient-blue text-white' : currentStep > 2 ? 'bg-green-500/20 text-green-400' : 'glass text-gray-400'}`}>
+              <span className="text-xs sm:text-sm font-bold">{currentStep > 2 ? '✓' : '2'}</span>
+              <span className="text-xs sm:text-sm hidden sm:inline">Sign</span>
             </div>
-            <ChevronRight className="w-4 h-4 text-gray-600" />
-            <div className={`flex items-center gap-2 px-4 py-2 rounded-xl ${currentStep === 3 ? 'bg-gradient-blue text-white' : 'glass text-gray-400'}`}>
-              <span className="text-sm font-bold">3</span>
-              <span className="text-sm">Assignment</span>
+            <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4 text-gray-600 flex-shrink-0" />
+            <div className={`flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl ${currentStep === 3 ? 'bg-gradient-blue text-white' : 'glass text-gray-400'}`}>
+              <span className="text-xs sm:text-sm font-bold">3</span>
+              <span className="text-xs sm:text-sm hidden sm:inline">Assign</span>
             </div>
           </div>
         </div>
       </motion.header>
 
-      <div className="pt-24 px-6 max-w-7xl mx-auto">
+      <div className="pt-28 sm:pt-24 px-3 sm:px-6 max-w-7xl mx-auto">
         <AnimatePresence mode="wait">
           {/* STEP 1: Quick Case Input */}
           {currentStep === 1 && (
@@ -294,26 +294,26 @@ function CreateFIRPageContent() {
             >
               {!firMode ? (
                 // Mode Selector
-                <div className="space-y-8">
-                  <div className="text-center mb-12">
+                <div className="space-y-4 sm:space-y-8">
+                  <div className="text-center mb-6 sm:mb-12">
                     <motion.h2
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="text-4xl font-black mb-4"
+                      className="text-2xl sm:text-4xl font-black mb-2 sm:mb-4"
                     >
                       <span className="text-gradient">Choose Filing Method</span>
                     </motion.h2>
-                    <p className="text-xl text-gray-400">Select how you want to file this FIR</p>
+                    <p className="text-sm sm:text-xl text-gray-400">Select how you want to file this FIR</p>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
                     {/* Voice Mode */}
                     <motion.button
                       initial={{ opacity: 0, y: 30 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.1 }}
                       onClick={() => setFIRMode('voice')}
-                      className="group glass-strong p-8 rounded-3xl hover-lift cursor-pointer relative overflow-hidden"
+                      className="group glass-strong p-5 sm:p-8 rounded-2xl sm:rounded-3xl hover-lift cursor-pointer relative overflow-hidden"
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                     >

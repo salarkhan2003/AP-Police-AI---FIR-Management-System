@@ -55,17 +55,17 @@ export default function LoginPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-navy-500 flex items-center justify-center px-4 py-8 relative overflow-hidden">
+    <div className="min-h-screen bg-navy-500 flex items-center justify-center px-3 sm:px-4 py-6 sm:py-8 relative overflow-hidden">
       {/* Animated Background */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-gradient-to-br from-navy-600 via-navy-500 to-black"></div>
         <motion.div
-          className="absolute top-20 left-10 w-72 h-72 bg-blue-500 rounded-full blur-3xl opacity-20"
+          className="absolute top-20 left-10 w-48 sm:w-72 h-48 sm:h-72 bg-blue-500 rounded-full blur-3xl opacity-20"
           animate={{ scale: [1, 1.2, 1], x: [0, 30, 0] }}
           transition={{ duration: 8, repeat: Infinity }}
         />
         <motion.div
-          className="absolute bottom-20 right-10 w-96 h-96 bg-cyan-500 rounded-full blur-3xl opacity-20"
+          className="absolute bottom-20 right-10 w-64 sm:w-96 h-64 sm:h-96 bg-cyan-500 rounded-full blur-3xl opacity-20"
           animate={{ scale: [1, 1.3, 1], x: [0, -30, 0] }}
           transition={{ duration: 10, repeat: Infinity }}
         />
@@ -77,21 +77,21 @@ export default function LoginPage() {
         className="relative z-10 w-full max-w-lg"
       >
         {/* Header */}
-        <motion.div className="text-center mb-8">
+        <motion.div className="text-center mb-6 sm:mb-8">
           <motion.div
-            className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center"
+            className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-3 sm:mb-4 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center"
             animate={{ boxShadow: ['0 0 20px rgba(59,130,246,0.3)', '0 0 40px rgba(59,130,246,0.6)', '0 0 20px rgba(59,130,246,0.3)'] }}
             transition={{ duration: 2, repeat: Infinity }}
           >
-            <Shield className="w-10 h-10 text-white" />
+            <Shield className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
           </motion.div>
-          <h1 className="text-3xl font-bold text-white mb-2">AP Police FIR System</h1>
-          <p className="text-gray-400">Secure login to access the portal</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-white mb-1 sm:mb-2">AP Police FIR System</h1>
+          <p className="text-sm sm:text-base text-gray-400">Secure login to access the portal</p>
         </motion.div>
 
         {/* Main Card */}
         <motion.div
-          className="glass-strong p-8 rounded-3xl border border-white/10"
+          className="glass-strong p-4 sm:p-8 rounded-2xl sm:rounded-3xl border border-white/10"
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.2 }}
