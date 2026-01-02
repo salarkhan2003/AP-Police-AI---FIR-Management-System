@@ -21,11 +21,12 @@ import {
   Fingerprint,
   Shield,
   Zap,
-  TrendingUp,
-  Activity
+  ArrowLeft
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import BackButton from '@/components/BackButton';
+import PDFDownloadModal from '@/components/PDFDownloadModal';
 
 interface PendingFIR {
   id: string;
@@ -48,7 +49,6 @@ interface PendingFIR {
 type SignatureMethod = 'aadhaar' | 'pad' | 'pin' | 'biometric' | null;
 
 export default function ApprovalQueuePage() {
-  const router = useRouter();
   const [pendingFIRs, setPendingFIRs] = useState<PendingFIR[]>([]);
   const [filteredFIRs, setFilteredFIRs] = useState<PendingFIR[]>([]);
   const [showFilters, setShowFilters] = useState(false);

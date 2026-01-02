@@ -1,82 +1,52 @@
-'use client';
-
-import { motion } from 'framer-motion';
-import { FileQuestion, Home, ArrowLeft, Search } from 'lucide-react';
 import Link from 'next/link';
 
 export default function NotFound() {
   return (
     <div className="min-h-screen bg-[#0A0E27] text-white flex items-center justify-center px-6">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="text-center max-w-md"
-      >
-        <motion.div
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ type: 'spring', duration: 0.5 }}
-          className="w-32 h-32 mx-auto mb-8 rounded-3xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center"
-        >
-          <FileQuestion className="w-16 h-16 text-white" />
-        </motion.div>
+      <div className="text-center max-w-md">
+        <div className="w-32 h-32 mx-auto mb-8 rounded-3xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white">
+            <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+            <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+            <circle cx="10" cy="12" r="2"/>
+            <path d="m20 17-1.09-1.09a2 2 0 0 0-2.82 0L10 22"/>
+          </svg>
+        </div>
 
-        <motion.h1
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2 }}
-          className="text-7xl font-black mb-4"
-        >
-          <span className="text-gradient">404</span>
-        </motion.h1>
+        <h1 className="text-7xl font-black mb-4 bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
+          404
+        </h1>
 
-        <motion.h2
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.3 }}
-          className="text-2xl font-bold mb-4"
-        >
+        <h2 className="text-2xl font-bold mb-4">
           Page Not Found
-        </motion.h2>
+        </h2>
 
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4 }}
-          className="text-gray-400 mb-8"
-        >
+        <p className="text-gray-400 mb-8">
           The page you&apos;re looking for doesn&apos;t exist or has been moved.
-        </motion.p>
+        </p>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center"
-        >
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link href="/">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-bold rounded-xl flex items-center justify-center gap-2 w-full sm:w-auto"
-            >
-              <Home className="w-5 h-5" />
+            <button className="px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-bold rounded-xl flex items-center justify-center gap-2 w-full sm:w-auto hover:opacity-90 transition-opacity">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                <polyline points="9 22 9 12 15 12 15 22"/>
+              </svg>
               Go Home
-            </motion.button>
+            </button>
           </Link>
 
           <Link href="/dashboard">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="px-6 py-3 glass text-white font-semibold rounded-xl flex items-center justify-center gap-2 w-full sm:w-auto"
-            >
-              <Search className="w-5 h-5" />
+            <button className="px-6 py-3 bg-white/10 backdrop-blur text-white font-semibold rounded-xl flex items-center justify-center gap-2 w-full sm:w-auto border border-white/20 hover:bg-white/20 transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="11" cy="11" r="8"/>
+                <path d="m21 21-4.3-4.3"/>
+              </svg>
               Dashboard
-            </motion.button>
+            </button>
           </Link>
-        </motion.div>
-      </motion.div>
+        </div>
+      </div>
     </div>
   );
 }
