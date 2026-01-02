@@ -46,9 +46,8 @@ body {
   }
 
   .glow-border {
-    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3),
-                0 0 40px rgba(6, 182, 212, 0.2),
-                inset 0 0 20px rgba(59, 130, 246, 0.1);
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.2),
+                0 0 30px rgba(6, 182, 212, 0.1);
   }
 
   .hover-lift {
@@ -57,7 +56,7 @@ body {
 
   .hover-lift:hover {
     transform: translateY(-5px);
-    box-shadow: 0 20px 40px rgba(59, 130, 246, 0.3);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
   }
 }
 

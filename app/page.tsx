@@ -35,7 +35,6 @@ import { useState, useEffect } from 'react';
 export default function HomePage() {
   const [currentFeature, setCurrentFeature] = useState(0);
   const [typedText, setTypedText] = useState('');
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   const aiTexts = [
     'Analyzing complaint...',
@@ -65,13 +64,6 @@ export default function HomePage() {
     return () => clearInterval(typeInterval);
   }, []);
 
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
 
   const features = [
     {
@@ -133,43 +125,33 @@ export default function HomePage() {
       <div className="fixed inset-0 pointer-events-none">
         <div className="absolute inset-0 bg-gradient-to-br from-blue-900/20 to-purple-900/20" />
 
-        {/* Floating orbs */}
+        {/* Floating orbs - hidden on mobile for performance */}
         <motion.div
-          className="absolute w-[600px] h-[600px] bg-blue-500 rounded-full blur-[150px] opacity-20"
+          className="hidden sm:block absolute w-[400px] h-[400px] bg-blue-500 rounded-full blur-[150px] opacity-10"
           animate={{
-            x: [0, 100, 0],
-            y: [0, -50, 0],
+            x: [0, 50, 0],
+            y: [0, -30, 0],
           }}
           transition={{ duration: 20, repeat: Infinity }}
           style={{ top: '10%', left: '5%' }}
         />
         <motion.div
-          className="absolute w-[500px] h-[500px] bg-cyan-500 rounded-full blur-[150px] opacity-15"
+          className="hidden sm:block absolute w-[300px] h-[300px] bg-cyan-500 rounded-full blur-[150px] opacity-10"
           animate={{
-            x: [0, -80, 0],
-            y: [0, 60, 0],
+            x: [0, -40, 0],
+            y: [0, 30, 0],
           }}
           transition={{ duration: 25, repeat: Infinity }}
-          style={{ top: '40%', right: '10%' }}
+          style={{ top: '40%', right: '15%' }}
         />
         <motion.div
-          className="absolute w-[400px] h-[400px] bg-purple-500 rounded-full blur-[120px] opacity-15"
+          className="hidden sm:block absolute w-[250px] h-[250px] bg-purple-500 rounded-full blur-[120px] opacity-10"
           animate={{
-            x: [0, 60, 0],
-            y: [0, -40, 0],
+            x: [0, 30, 0],
+            y: [0, -20, 0],
           }}
           transition={{ duration: 18, repeat: Infinity }}
           style={{ bottom: '10%', left: '30%' }}
-        />
-
-        {/* Mouse follower */}
-        <motion.div
-          className="absolute w-64 h-64 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"
-          animate={{
-            x: mousePosition.x - 128,
-            y: mousePosition.y - 128,
-          }}
-          transition={{ type: 'spring', damping: 30, stiffness: 200 }}
         />
       </div>
 

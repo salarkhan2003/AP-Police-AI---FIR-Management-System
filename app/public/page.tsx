@@ -114,11 +114,12 @@ export default function PublicPortalPage() {
   ];
 
   const handleSearch = () => {
-    if (!caseNumber || !phoneNumber) return;
+    if (!caseNumber) return;
     setIsLoading(true);
     setTimeout(() => {
       setIsLoading(false);
-      setStep('otp');
+      // Skip OTP, go directly to tracking
+      setStep('tracking');
     }, 1500);
   };
 
@@ -130,6 +131,13 @@ export default function PublicPortalPage() {
       setStep('tracking');
     }, 1500);
   };
+
+  // Demo case IDs for prototype
+  const demoCaseIds = [
+    { id: 'AP-2026-VJA-00234', type: 'Armed Robbery', status: 'Investigating' },
+    { id: 'AP-2026-VJA-00189', type: 'Cyber Fraud', status: 'CI Approved' },
+    { id: 'AP-2026-VJA-00156', type: 'Vehicle Theft', status: 'Chargesheet Filed' }
+  ];
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -200,16 +208,16 @@ export default function PublicPortalPage() {
                 >
                   <Search className="w-12 h-12 text-white" />
                 </motion.div>
-                <h1 className="text-4xl font-black mb-4">
+                <h1 className="text-3xl sm:text-4xl font-black mb-4">
                   <span className="text-gradient">Track Your FIR</span>
                 </h1>
-                <p className="text-xl text-gray-400">
-                  Enter your case number and registered mobile to view live status
+                <p className="text-base sm:text-xl text-gray-400">
+                  Enter your case number to view live status
                 </p>
               </div>
 
-              <div className="glass-strong p-8 rounded-3xl">
-                <div className="space-y-6">
+              <div className="glass-strong p-4 sm:p-8 rounded-2xl sm:rounded-3xl">
+                <div className="space-y-4 sm:space-y-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-300 mb-2">
                       FIR / Case Number
@@ -221,34 +229,37 @@ export default function PublicPortalPage() {
                         placeholder="e.g., AP-2026-VJA-00234"
                         value={caseNumber}
                         onChange={(e) => setCaseNumber(e.target.value.toUpperCase())}
-                        className="w-full pl-12 pr-4 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 font-mono text-lg"
+                        className="w-full pl-12 pr-4 py-3 sm:py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 font-mono text-base sm:text-lg"
                       />
                     </div>
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-2">
-                      Registered Mobile Number
-                    </label>
-                    <div className="relative">
-                      <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                      <input
-                        type="tel"
-                        placeholder="10-digit mobile number"
-                        value={phoneNumber}
-                        onChange={(e) => setPhoneNumber(e.target.value)}
-                        maxLength={10}
-                        className="w-full pl-12 pr-4 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 text-lg"
-                      />
+                  {/* Demo Case IDs for prototype */}
+                  <div className="glass p-4 rounded-xl border border-green-500/30 bg-green-500/5">
+                    <p className="text-xs text-green-400 font-semibold mb-3 flex items-center gap-1">
+                      <AlertCircle className="w-3 h-3" />
+                      DEMO: Click to try these Case IDs
+                    </p>
+                    <div className="space-y-2">
+                      {demoCaseIds.map((demo) => (
+                        <button
+                          key={demo.id}
+                          onClick={() => setCaseNumber(demo.id)}
+                          className="w-full flex items-center justify-between px-3 py-2 bg-green-500/10 hover:bg-green-500/20 rounded-lg transition-colors text-left"
+                        >
+                          <span className="font-mono text-sm text-green-400">{demo.id}</span>
+                          <span className="text-xs text-gray-400">{demo.type}</span>
+                        </button>
+                      ))}
                     </div>
                   </div>
 
                   <motion.button
                     onClick={handleSearch}
-                    disabled={!caseNumber || !phoneNumber || isLoading}
+                    disabled={!caseNumber || isLoading}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="w-full py-4 bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-bold rounded-xl flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full py-3 sm:py-4 bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-bold rounded-xl flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {isLoading ? (
                       <motion.div
@@ -258,23 +269,11 @@ export default function PublicPortalPage() {
                       />
                     ) : (
                       <>
-                        <Lock className="w-5 h-5" />
-                        Verify & Track
+                        <Search className="w-5 h-5" />
+                        Track FIR Status
                       </>
                     )}
                   </motion.button>
-                </div>
-
-                <div className="mt-6 p-4 bg-blue-500/10 border border-blue-500/30 rounded-xl">
-                  <div className="flex items-start gap-3">
-                    <AlertCircle className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
-                    <div className="text-sm">
-                      <p className="text-blue-300 font-medium mb-1">OTP Verification Required</p>
-                      <p className="text-gray-400">
-                        For your privacy, we&apos;ll send an OTP to verify your identity before showing case details.
-                      </p>
-                    </div>
-                  </div>
                 </div>
               </div>
 
