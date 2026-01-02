@@ -27,12 +27,11 @@ import {
   ArrowLeft,
   Fingerprint
 } from 'lucide-react';
-import { useState, useRef, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
+import { useState, useRef, useEffect, Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import BackButton from '@/components/BackButton';
 
-type FIRMode = 'manual' | 'voice' | 'template' | null;
+type FIRMode = 'manual' | 'voice' | 'template' | 'ai-generated' | null;
 type FIRStep = 1 | 2 | 3;
 type SignatureMethod = 'aadhaar' | 'pad' | 'pin' | null;
 
@@ -51,8 +50,9 @@ interface AIsuggestion {
   action?: string;
 }
 
-export default function CreateFIRPage() {
+function CreateFIRPageContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [currentStep, setCurrentStep] = useState<FIRStep>(1);
   const [firMode, setFIRMode] = useState<FIRMode>(null);
   const [isRecording, setIsRecording] = useState(false);
@@ -64,6 +64,7 @@ export default function CreateFIRPage() {
   const [selectedOfficers, setSelectedOfficers] = useState<string[]>([]);
   const [approvalFlow, setApprovalFlow] = useState<'parallel' | 'sequence'>('parallel');
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [fromAIWriter, setFromAIWriter] = useState(false);
 
   // Constable signature states
   const [signMethod, setSignMethod] = useState<SignatureMethod>(null);
@@ -84,6 +85,24 @@ export default function CreateFIRPage() {
 
   const [aiSuggestions, setAiSuggestions] = useState<AIsuggestion[]>([]);
   const [showAIHelp, setShowAIHelp] = useState(false);
+
+  // Check for narrative from AI Writer on component mount
+  useEffect(() => {
+    const narrative = searchParams.get('narrative');
+    if (narrative) {
+      // Pre-fill the form with AI-generated narrative
+      setFormData(prev => ({
+        ...prev,
+        incidentDescription: decodeURIComponent(narrative),
+        crimeType: 'AI Generated FIR'
+      }));
+      // Set mode to AI generated and skip to signature step
+      setFIRMode('ai-generated');
+      setFromAIWriter(true);
+      // Go directly to step 2 (constable signature)
+      setCurrentStep(2);
+    }
+  }, [searchParams]);
 
   // Mock officers data
   const officers: Officer[] = [
@@ -888,25 +907,54 @@ export default function CreateFIRPage() {
               exit={{ opacity: 0, x: -20 }}
               className="max-w-3xl mx-auto"
             >
-              <button
-                onClick={() => setCurrentStep(1)}
-                className="mb-6 flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
-              >
-                <ArrowLeft className="w-4 h-4" />
-                Back to case details
-              </button>
+              {!fromAIWriter && (
+                <button
+                  onClick={() => setCurrentStep(1)}
+                  className="mb-6 flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                  Back to case details
+                </button>
+              )}
 
-              <div className="glass-strong p-8 rounded-3xl mb-6">
-                <div className="text-center mb-8">
-                  <div className="w-20 h-20 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center">
-                    <FileSignature className="w-10 h-10 text-white" />
+              <div className="glass-strong p-4 sm:p-8 rounded-2xl sm:rounded-3xl mb-6">
+                <div className="text-center mb-6 sm:mb-8">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center">
+                    <FileSignature className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
                   </div>
-                  <h2 className="text-3xl font-bold text-gradient mb-2">Your Digital Signature Required</h2>
-                  <p className="text-gray-400">As the filing constable, you must sign this FIR before submission</p>
+                  <h2 className="text-2xl sm:text-3xl font-bold text-gradient mb-2">Your Digital Signature Required</h2>
+                  <p className="text-sm sm:text-base text-gray-400">As the filing constable, you must sign this FIR before submission</p>
                 </div>
 
+                {/* AI Generated FIR Summary - Show only when coming from AI Writer */}
+                {fromAIWriter && formData.incidentDescription && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="glass p-4 sm:p-6 rounded-2xl mb-6 border-l-4 border-purple-500"
+                  >
+                    <div className="flex items-center gap-2 mb-3">
+                      <Sparkles className="w-5 h-5 text-purple-400" />
+                      <h3 className="font-semibold text-purple-400">AI Generated FIR Content</h3>
+                    </div>
+                    <p className="text-sm text-gray-300 line-clamp-4 mb-3">
+                      {formData.incidentDescription.substring(0, 300)}...
+                    </p>
+                    <button
+                      onClick={() => {
+                        setFromAIWriter(false);
+                        setFIRMode('manual');
+                        setCurrentStep(1);
+                      }}
+                      className="text-sm text-blue-400 hover:text-blue-300"
+                    >
+                      Edit FIR Content →
+                    </button>
+                  </motion.div>
+                )}
+
                 {/* Officer Info */}
-                <div className="glass p-6 rounded-2xl mb-6">
+                <div className="glass p-4 sm:p-6 rounded-2xl mb-6">
                   <h3 className="font-semibold mb-4">Filing Officer Details</h3>
                   <div className="grid grid-cols-2 gap-4 text-sm">
                     <div>
@@ -1258,6 +1306,22 @@ export default function CreateFIRPage() {
         </AnimatePresence>
       </div>
     </div>
+  );
+}
+
+// Wrap with Suspense for useSearchParams
+export default function CreateFIRPageWrapper() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-[#0A0E27] flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="w-12 h-12 animate-spin text-blue-500 mx-auto mb-4" />
+          <p className="text-white">Loading FIR Form...</p>
+        </div>
+      </div>
+    }>
+      <CreateFIRPageContent />
+    </Suspense>
   );
 }
 
