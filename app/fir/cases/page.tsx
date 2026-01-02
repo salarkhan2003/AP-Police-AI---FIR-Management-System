@@ -652,7 +652,14 @@ export default function FIRCasesPage() {
 
               {/* Actions */}
               <div className="flex gap-3 mt-6 pt-6 border-t border-white/10">
-                <button className="flex-1 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-bold rounded-xl flex items-center justify-center gap-2">
+                <button
+                  onClick={() => {
+                    setSelectedCaseForPDF(selectedCase.caseNumber);
+                    setSelectedCase(null);
+                    setShowPDFModal(true);
+                  }}
+                  className="flex-1 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-bold rounded-xl flex items-center justify-center gap-2"
+                >
                   <Download className="w-5 h-5" />
                   Download PDF
                 </button>
@@ -667,72 +674,11 @@ export default function FIRCasesPage() {
       </AnimatePresence>
 
       {/* PDF Download Modal */}
-      <AnimatePresence>
-        {showPDFModal && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-6"
-            onClick={() => setShowPDFModal(false)}
-          >
-            <motion.div
-              initial={{ scale: 0.9, y: 20 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.9, y: 20 }}
-              onClick={(e) => e.stopPropagation()}
-              className="glass-strong p-8 rounded-3xl max-w-md w-full"
-            >
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-bold text-gradient">Download FIR Case PDF</h2>
-                <button
-                  onClick={() => setShowPDFModal(false)}
-                  className="p-2 glass rounded-xl hover:bg-white/10"
-                >
-                  <X className="w-6 h-6" />
-                </button>
-              </div>
-
-              <div className="mb-6">
-                <p className="text-gray-400 text-sm mb-2">Select the format and options for the PDF download:</p>
-                <div className="grid grid-cols-1 gap-4">
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="checkbox"
-                      id="includeEvidence"
-                      className="w-5 h-5 text-blue-500 border-gray-300 rounded"
-                    />
-                    <label htmlFor="includeEvidence" className="text-sm text-white">
-                      Include Evidence Files
-                    </label>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="checkbox"
-                      id="emailPDF"
-                      className="w-5 h-5 text-blue-500 border-gray-300 rounded"
-                    />
-                    <label htmlFor="emailPDF" className="text-sm text-white">
-                      Email PDF to Complainant
-                    </label>
-                  </div>
-                </div>
-              </div>
-
-              <button
-                onClick={() => {
-                  setShowPDFModal(false);
-                  // Add PDF generation and download logic here
-                }}
-                className="w-full py-3 bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-bold rounded-xl flex items-center justify-center gap-2"
-              >
-                <Download className="w-5 h-5" />
-                Generate PDF
-              </button>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <PDFDownloadModal
+        isOpen={showPDFModal}
+        onClose={() => setShowPDFModal(false)}
+        caseNumber={selectedCaseForPDF || 'AP-2026-VJA-00234'}
+      />
     </div>
   );
 }

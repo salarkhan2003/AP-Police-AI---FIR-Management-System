@@ -21,10 +21,12 @@ import {
   AlertTriangle,
   ChevronRight,
   Activity,
-  PieChart
+  PieChart,
+  ArrowLeft
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import BackButton from '@/components/BackButton';
 
 interface StatCard {
   title: string;

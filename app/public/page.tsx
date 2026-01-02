@@ -4,7 +4,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   Search,
   CheckCircle,
-  Clock,
   FileText,
   MapPin,
   Calendar,
@@ -23,9 +22,12 @@ import {
   FileCheck,
   Truck,
   Scale,
-  XCircle
+  XCircle,
+  ArrowLeft
 } from 'lucide-react';
 import { useState } from 'react';
+import Link from 'next/link';
+import PDFDownloadModal from '@/components/PDFDownloadModal';
 
 type TrackingStep = {
   id: string;
@@ -46,6 +48,7 @@ export default function PublicPortalPage() {
   const [showChat, setShowChat] = useState(false);
   const [showUpload, setShowUpload] = useState(false);
   const [rating, setRating] = useState(0);
+  const [showPDFModal, setShowPDFModal] = useState(false);
 
   const trackingSteps: TrackingStep[] = [
     {
@@ -138,38 +141,47 @@ export default function PublicPortalPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0A0E27] text-white">
+    <div className="min-h-screen bg-[#0A0E27] text-white pb-20">
       {/* Header */}
       <motion.header
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        className="glass-strong border-b border-white/10"
+        className="glass-strong border-b border-white/10 sticky top-0 z-50"
       >
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center">
-              <Shield className="w-7 h-7 text-white" />
+            <Link href="/">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                className="p-2 glass rounded-xl hover:bg-white/10 flex items-center gap-2"
+              >
+                <ArrowLeft className="w-5 h-5" />
+                <span className="hidden sm:inline text-sm">Home</span>
+              </motion.button>
+            </Link>
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center">
+              <Shield className="w-5 h-5 sm:w-7 sm:h-7 text-white" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-gradient">AP Police</h1>
-              <p className="text-xs text-gray-400">Public FIR Tracking Portal</p>
+              <h1 className="text-lg sm:text-xl font-bold text-gradient">AP Police</h1>
+              <p className="text-xs text-gray-400 hidden sm:block">Public FIR Tracking Portal</p>
             </div>
           </div>
 
-          <div className="flex items-center gap-4">
-            <button className="px-4 py-2 glass rounded-xl hover:bg-white/10 text-sm">
+          <div className="flex items-center gap-2 sm:gap-4">
+            <button className="px-3 py-2 glass rounded-xl hover:bg-white/10 text-sm hidden sm:block">
               Help
             </button>
-            <select className="px-4 py-2 glass rounded-xl hover:bg-white/10 text-sm bg-transparent">
-              <option>English</option>
-              <option>తెలుగు</option>
-              <option>हिंदी</option>
+            <select className="px-2 sm:px-4 py-2 glass rounded-xl hover:bg-white/10 text-sm bg-transparent">
+              <option value="en">EN</option>
+              <option value="te">తెలుగు</option>
+              <option value="hi">हिंदी</option>
             </select>
           </div>
         </div>
       </motion.header>
 
-      <main className="max-w-6xl mx-auto px-6 py-12">
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-12">
         <AnimatePresence mode="wait">
           {/* Search Step */}
           {step === 'search' && (
@@ -391,25 +403,27 @@ export default function PublicPortalPage() {
 
                   <div className="flex flex-wrap gap-3">
                     <motion.button
+                      onClick={() => setShowPDFModal(true)}
                       whileHover={{ scale: 1.02 }}
-                      className="px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-bold rounded-xl flex items-center gap-2"
+                      className="px-4 sm:px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-bold rounded-xl flex items-center gap-2"
                     >
                       <Download className="w-5 h-5" />
-                      Download FIR
+                      <span className="hidden sm:inline">Download FIR</span>
+                      <span className="sm:hidden">PDF</span>
                     </motion.button>
                     <button
                       onClick={() => setShowUpload(true)}
-                      className="px-6 py-3 glass text-white font-semibold rounded-xl flex items-center gap-2"
+                      className="px-4 sm:px-6 py-3 glass text-white font-semibold rounded-xl flex items-center gap-2"
                     >
                       <Upload className="w-5 h-5" />
-                      Add Evidence
+                      <span className="hidden sm:inline">Add Evidence</span>
                     </button>
                     <button
                       onClick={() => setShowChat(true)}
-                      className="px-6 py-3 glass text-white font-semibold rounded-xl flex items-center gap-2"
+                      className="px-4 sm:px-6 py-3 glass text-white font-semibold rounded-xl flex items-center gap-2"
                     >
                       <MessageSquare className="w-5 h-5" />
-                      Chat with IO
+                      <span className="hidden sm:inline">Chat with IO</span>
                     </button>
                   </div>
                 </div>
@@ -675,6 +689,13 @@ export default function PublicPortalPage() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* PDF Download Modal */}
+      <PDFDownloadModal
+        isOpen={showPDFModal}
+        onClose={() => setShowPDFModal(false)}
+        caseNumber={caseNumber || 'AP-2026-VJA-00234'}
+      />
     </div>
   );
 }

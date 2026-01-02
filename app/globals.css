@@ -79,3 +79,380 @@ body {
   background: linear-gradient(135deg, #06B6D4 0%, #3B82F6 100%);
 }
 
+/* Fix dropdown/select colors */
+select {
+  background-color: #0A0E27 !important;
+  color: white !important;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+select option {
+  background-color: #0A0E27 !important;
+  color: white !important;
+  padding: 10px;
+}
+
+select:focus {
+  outline: none;
+  border-color: #3B82F6;
+}
+
+/* Input styling */
+input, textarea {
+  background-color: rgba(10, 14, 39, 0.8);
+  color: white;
+}
+
+input::placeholder, textarea::placeholder {
+  color: rgba(156, 163, 175, 0.8);
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: #3B82F6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+/* Fix checkbox styling */
+input[type="checkbox"] {
+  accent-color: #3B82F6;
+}
+
+/* Performance optimization */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.glass, .glass-strong {
+  will-change: auto;
+}
+
+/* Reduce animation jank */
+@media (prefers-reduced-motion: no-preference) {
+  .animate-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+}
+
+/* Fix for date/time inputs */
+input[type="date"], input[type="time"], input[type="datetime-local"] {
+  color-scheme: dark;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator,
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
+
+/* ===== RESPONSIVE DESIGN SYSTEM ===== */
+
+/* Mobile First - Base styles (< 640px) */
+@media (max-width: 639px) {
+  html {
+    font-size: 14px;
+  }
+
+  body {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  /* Touch-friendly tap targets */
+  button, a, input, select, textarea {
+    min-height: 44px;
+  }
+
+  /* Compact header */
+  header h1 {
+    font-size: 1.25rem !important;
+  }
+
+  /* Stack grids on mobile */
+  .grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Full width cards */
+  .glass-strong, .glass {
+    border-radius: 1rem;
+  }
+
+  /* Smaller padding on mobile */
+  .p-6 {
+    padding: 1rem !important;
+  }
+
+  .p-8 {
+    padding: 1.25rem !important;
+  }
+
+  .px-6 {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  /* Hide desktop nav, show mobile nav */
+  .desktop-only {
+    display: none !important;
+  }
+
+  /* Responsive text */
+  .text-4xl {
+    font-size: 1.75rem !important;
+  }
+
+  .text-3xl {
+    font-size: 1.5rem !important;
+  }
+
+  .text-2xl {
+    font-size: 1.25rem !important;
+  }
+
+  /* Stack buttons vertically */
+  .flex-row {
+    flex-direction: column !important;
+  }
+
+  /* Full width buttons on mobile */
+  .flex-1 {
+    width: 100%;
+  }
+
+  /* Scrollable tables */
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}
+
+/* Small tablets (640px - 767px) */
+@media (min-width: 640px) and (max-width: 767px) {
+  .grid-cols-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .grid-cols-3, .grid-cols-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Tablets (768px - 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .grid-cols-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .grid-cols-4 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  /* Sidebar collapse on tablet */
+  .sidebar {
+    width: 64px;
+    overflow: hidden;
+  }
+
+  .sidebar:hover {
+    width: 250px;
+  }
+}
+
+/* Desktop (1024px+) */
+@media (min-width: 1024px) {
+  .mobile-only {
+    display: none !important;
+  }
+
+  /* Show full sidebar */
+  .sidebar {
+    width: 250px;
+  }
+}
+
+/* Large screens (1280px+) */
+@media (min-width: 1280px) {
+  .max-w-7xl {
+    max-width: 1280px;
+  }
+}
+
+/* Extra large screens (1536px+) */
+@media (min-width: 1536px) {
+  .max-w-7xl {
+    max-width: 1400px;
+  }
+}
+
+/* Safe area for notched devices */
+@supports (padding: max(0px)) {
+  body {
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
+  }
+}
+
+/* Landscape orientation adjustments */
+@media (orientation: landscape) and (max-height: 500px) {
+  header {
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+  }
+
+  .pt-24 {
+    padding-top: 4rem !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .glass, .glass-strong {
+    border-width: 2px;
+  }
+
+  button {
+    border: 2px solid currentColor;
+  }
+}
+
+/* Dark mode is default, but support light mode preference */
+@media (prefers-color-scheme: light) {
+  /* Keep dark theme regardless - this is intentional for the police app aesthetic */
+}
+
+/* Print styles */
+@media print {
+  body {
+    background: white !important;
+    color: black !important;
+  }
+
+  .glass, .glass-strong {
+    background: white !important;
+    border: 1px solid #ccc !important;
+  }
+
+  button, nav, header {
+    display: none !important;
+  }
+}
+
+/* Reduced motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+  /* Larger touch targets */
+  button, a {
+    min-height: 48px;
+    min-width: 48px;
+  }
+
+  /* Disable hover effects that don't work on touch */
+  .hover\:scale-105:hover {
+    transform: none;
+  }
+
+  /* Add active state instead */
+  button:active, a:active {
+    transform: scale(0.98);
+    opacity: 0.9;
+  }
+}
+
+/* Scrollbar for mobile - thinner */
+@media (max-width: 768px) {
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+}
+
+/* Fix iOS input zoom */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  select, textarea, input {
+    font-size: 16px !important;
+  }
+}
+
+/* Bottom navigation styles for mobile */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(10, 14, 39, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.5rem;
+  padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+  z-index: 50;
+}
+
+/* Floating action button */
+.fab {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3B82F6 0%, #06B6D4 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
+  z-index: 40;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.fab:active {
+  transform: scale(0.95);
+}
+
+/* Pull to refresh indicator */
+.pull-to-refresh {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Swipeable card styles */
+.swipe-card {
+  touch-action: pan-y;
+  user-select: none;
+}
+
+/* Modal backdrop for mobile */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 100;
+}
+
+/* Full screen modal on mobile */
+@media (max-width: 639px) {
+  .modal-content {
+    position: fixed;
+    inset: 0;
+    border-radius: 0 !important;
+    max-height: 100vh !important;
+    overflow-y: auto;
+  }
+}
+
+

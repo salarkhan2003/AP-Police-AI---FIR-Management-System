@@ -23,15 +23,18 @@ import {
   Zap,
   Brain,
   Video,
-  Send
+  Send,
+  ArrowLeft,
+  Fingerprint
 } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { quickGenerateFIR, GeneratedFIR } from '@/lib/ai-fir-writer';
+import BackButton from '@/components/BackButton';
 
 type FIRMode = 'manual' | 'voice' | 'template' | null;
-type FIRStep = 1 | 2;
+type FIRStep = 1 | 2 | 3;
+type SignatureMethod = 'aadhaar' | 'pad' | 'pin' | null;
 
 interface Officer {
   id: string;
@@ -61,7 +64,11 @@ export default function CreateFIRPage() {
   const [selectedOfficers, setSelectedOfficers] = useState<string[]>([]);
   const [approvalFlow, setApprovalFlow] = useState<'parallel' | 'sequence'>('parallel');
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [aiGeneratedFIR, setAiGeneratedFIR] = useState<GeneratedFIR | null>(null);
+
+  // Constable signature states
+  const [signMethod, setSignMethod] = useState<SignatureMethod>(null);
+  const [constableSigned, setConstableSigned] = useState(false);
+  const [signaturePin, setSignaturePin] = useState(['', '', '', '']);
 
   const [formData, setFormData] = useState({
     crimeType: '',
@@ -165,35 +172,17 @@ export default function CreateFIRPage() {
         setTranscript(sampleTranscript);
         setIsProcessing(true);
 
-        try {
-          // Use real AI to generate FIR
-          const result = await quickGenerateFIR(sampleTranscript);
-          setAiGeneratedFIR(result);
-
-          setFormData({
-            ...formData,
-            crimeType: 'Theft - Mobile Phone',
-            location: 'Vijayawada Central Market',
-            dateTime: '2026-01-02T18:00',
-            incidentDescription: result.narrative,
-            ipcSections: result.suggestedIPCSections.map(s => s.split(' - ')[0])
-          });
-          setIsProcessing(false);
-          setShowAIHelp(true);
-        } catch (error) {
-          console.error('AI generation error:', error);
-          // Fallback to simulated data
-          setFormData({
-            ...formData,
-            crimeType: 'Theft - Mobile Phone',
-            location: 'Vijayawada Central Market',
-            dateTime: '2026-01-02T18:00',
-            incidentDescription: sampleTranscript,
-            ipcSections: ['379', '380']
-          });
-          setIsProcessing(false);
-          setShowAIHelp(true);
-        }
+        // Simulate AI processing and fill form
+        setFormData({
+          ...formData,
+          crimeType: 'Theft - Mobile Phone',
+          location: 'Vijayawada Central Market',
+          dateTime: '2026-01-02T18:00',
+          incidentDescription: `On 02-01-2026 at approximately 18:00 hours, the complainant reported the following incident:\n\n${sampleTranscript}\n\nBased on the complaint received, appropriate action will be taken.`,
+          ipcSections: ['379', '380']
+        });
+        setIsProcessing(false);
+        setShowAIHelp(true);
       }, 3000);
     }
   };
@@ -247,12 +236,7 @@ export default function CreateFIRPage() {
       >
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <button
-              onClick={() => router.back()}
-              className="p-2 glass rounded-xl hover:bg-white/10"
-            >
-              <X className="w-5 h-5" />
-            </button>
+            <BackButton href="/dashboard" label="Back" />
             <div>
               <h1 className="text-xl font-bold text-gradient">File New FIR</h1>
               <p className="text-xs text-gray-400">Ultra-Fast 2-Step Process • ~40 seconds</p>
@@ -261,13 +245,18 @@ export default function CreateFIRPage() {
 
           {/* Step Indicator */}
           <div className="flex items-center gap-3">
-            <div className={`flex items-center gap-2 px-4 py-2 rounded-xl ${currentStep === 1 ? 'bg-gradient-blue text-white' : 'glass text-gray-400'}`}>
-              <span className="text-sm font-bold">1</span>
+            <div className={`flex items-center gap-2 px-4 py-2 rounded-xl ${currentStep === 1 ? 'bg-gradient-blue text-white' : currentStep > 1 ? 'bg-green-500/20 text-green-400' : 'glass text-gray-400'}`}>
+              <span className="text-sm font-bold">{currentStep > 1 ? '✓' : '1'}</span>
               <span className="text-sm">Case Input</span>
             </div>
             <ChevronRight className="w-4 h-4 text-gray-600" />
-            <div className={`flex items-center gap-2 px-4 py-2 rounded-xl ${currentStep === 2 ? 'bg-gradient-blue text-white' : 'glass text-gray-400'}`}>
-              <span className="text-sm font-bold">2</span>
+            <div className={`flex items-center gap-2 px-4 py-2 rounded-xl ${currentStep === 2 ? 'bg-gradient-blue text-white' : currentStep > 2 ? 'bg-green-500/20 text-green-400' : 'glass text-gray-400'}`}>
+              <span className="text-sm font-bold">{currentStep > 2 ? '✓' : '2'}</span>
+              <span className="text-sm">Your Sign</span>
+            </div>
+            <ChevronRight className="w-4 h-4 text-gray-600" />
+            <div className={`flex items-center gap-2 px-4 py-2 rounded-xl ${currentStep === 3 ? 'bg-gradient-blue text-white' : 'glass text-gray-400'}`}>
+              <span className="text-sm font-bold">3</span>
               <span className="text-sm">Assignment</span>
             </div>
           </div>
@@ -890,21 +879,225 @@ export default function CreateFIRPage() {
             </motion.div>
           )}
 
-          {/* STEP 2: Smart Assignment */}
+          {/* STEP 2: Constable Digital Signature */}
           {currentStep === 2 && (
             <motion.div
               key="step2"
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
-              className="max-w-6xl mx-auto"
+              className="max-w-3xl mx-auto"
             >
               <button
                 onClick={() => setCurrentStep(1)}
                 className="mb-6 flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
               >
-                <ArrowRight className="w-4 h-4 rotate-180" />
+                <ArrowLeft className="w-4 h-4" />
                 Back to case details
+              </button>
+
+              <div className="glass-strong p-8 rounded-3xl mb-6">
+                <div className="text-center mb-8">
+                  <div className="w-20 h-20 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center">
+                    <FileSignature className="w-10 h-10 text-white" />
+                  </div>
+                  <h2 className="text-3xl font-bold text-gradient mb-2">Your Digital Signature Required</h2>
+                  <p className="text-gray-400">As the filing constable, you must sign this FIR before submission</p>
+                </div>
+
+                {/* Officer Info */}
+                <div className="glass p-6 rounded-2xl mb-6">
+                  <h3 className="font-semibold mb-4">Filing Officer Details</h3>
+                  <div className="grid grid-cols-2 gap-4 text-sm">
+                    <div>
+                      <p className="text-gray-400">Name</p>
+                      <p className="font-medium">Const. K. Suresh Kumar</p>
+                    </div>
+                    <div>
+                      <p className="text-gray-400">Badge Number</p>
+                      <p className="font-medium">PC-1234</p>
+                    </div>
+                    <div>
+                      <p className="text-gray-400">Station</p>
+                      <p className="font-medium">Vijayawada Central PS</p>
+                    </div>
+                    <div>
+                      <p className="text-gray-400">Timestamp</p>
+                      <p className="font-medium">{new Date().toLocaleString()}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {!constableSigned ? (
+                  <>
+                    <h3 className="font-semibold mb-4 text-center">Choose Signature Method</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                      <motion.button
+                        onClick={() => setSignMethod('aadhaar')}
+                        whileHover={{ scale: 1.02 }}
+                        className={`p-6 rounded-2xl text-center transition-all ${
+                          signMethod === 'aadhaar' ? 'bg-gradient-to-br from-blue-500 to-cyan-500 text-white' : 'glass hover:bg-white/10'
+                        }`}
+                      >
+                        <Shield className="w-10 h-10 mx-auto mb-3 text-blue-400" />
+                        <p className="font-bold mb-1">Aadhaar eSign</p>
+                        <p className="text-xs opacity-80">OTP verification</p>
+                      </motion.button>
+
+                      <motion.button
+                        onClick={() => setSignMethod('pad')}
+                        whileHover={{ scale: 1.02 }}
+                        className={`p-6 rounded-2xl text-center transition-all ${
+                          signMethod === 'pad' ? 'bg-gradient-to-br from-purple-500 to-pink-500 text-white' : 'glass hover:bg-white/10'
+                        }`}
+                      >
+                        <Edit className="w-10 h-10 mx-auto mb-3 text-purple-400" />
+                        <p className="font-bold mb-1">Signature Pad</p>
+                        <p className="text-xs opacity-80">Draw signature</p>
+                      </motion.button>
+
+                      <motion.button
+                        onClick={() => setSignMethod('pin')}
+                        whileHover={{ scale: 1.02 }}
+                        className={`p-6 rounded-2xl text-center transition-all ${
+                          signMethod === 'pin' ? 'bg-gradient-to-br from-green-500 to-emerald-500 text-white' : 'glass hover:bg-white/10'
+                        }`}
+                      >
+                        <Fingerprint className="w-10 h-10 mx-auto mb-3 text-green-400" />
+                        <p className="font-bold mb-1">Quick PIN</p>
+                        <p className="text-xs opacity-80">4-digit approval</p>
+                      </motion.button>
+                    </div>
+
+                    {/* Signature Input Based on Method */}
+                    {signMethod && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="glass p-6 rounded-2xl"
+                      >
+                        {signMethod === 'aadhaar' && (
+                          <div className="text-center">
+                            <h4 className="font-semibold mb-4">Enter Aadhaar OTP</h4>
+                            <p className="text-sm text-gray-400 mb-4">OTP sent to XXXXXX7890</p>
+                            <div className="flex justify-center gap-3 mb-6">
+                              {[0, 1, 2, 3, 4, 5].map((i) => (
+                                <input
+                                  key={i}
+                                  type="text"
+                                  maxLength={1}
+                                  className="w-12 h-12 text-center text-xl font-bold bg-[#0A0E27] border border-white/20 rounded-xl focus:outline-none focus:border-blue-500"
+                                />
+                              ))}
+                            </div>
+                            <button
+                              onClick={() => setConstableSigned(true)}
+                              className="px-8 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-bold rounded-xl"
+                            >
+                              Verify & Sign
+                            </button>
+                          </div>
+                        )}
+
+                        {signMethod === 'pad' && (
+                          <div className="text-center">
+                            <h4 className="font-semibold mb-4">Draw Your Signature</h4>
+                            <div className="w-full h-40 bg-white rounded-xl mb-4 flex items-center justify-center">
+                              <p className="text-gray-400">Signature pad area</p>
+                            </div>
+                            <div className="flex gap-3 justify-center">
+                              <button className="px-6 py-2 glass rounded-xl hover:bg-white/10">Clear</button>
+                              <button
+                                onClick={() => setConstableSigned(true)}
+                                className="px-8 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold rounded-xl"
+                              >
+                                Accept Signature
+                              </button>
+                            </div>
+                          </div>
+                        )}
+
+                        {signMethod === 'pin' && (
+                          <div className="text-center">
+                            <h4 className="font-semibold mb-4">Enter Your 4-Digit PIN</h4>
+                            <div className="flex justify-center gap-3 mb-6">
+                              {[0, 1, 2, 3].map((i) => (
+                                <input
+                                  key={i}
+                                  type="password"
+                                  maxLength={1}
+                                  value={signaturePin[i]}
+                                  onChange={(e) => {
+                                    const newPin = [...signaturePin];
+                                    newPin[i] = e.target.value;
+                                    setSignaturePin(newPin);
+                                    // Auto-focus next
+                                    if (e.target.value && i < 3) {
+                                      const next = e.target.nextElementSibling as HTMLInputElement;
+                                      next?.focus();
+                                    }
+                                  }}
+                                  className="w-14 h-14 text-center text-2xl font-bold bg-[#0A0E27] border border-white/20 rounded-xl focus:outline-none focus:border-green-500"
+                                />
+                              ))}
+                            </div>
+                            <button
+                              onClick={() => setConstableSigned(true)}
+                              className="px-8 py-3 bg-gradient-to-r from-green-500 to-emerald-500 text-white font-bold rounded-xl"
+                            >
+                              Confirm & Sign
+                            </button>
+                          </div>
+                        )}
+                      </motion.div>
+                    )}
+                  </>
+                ) : (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="text-center"
+                  >
+                    <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-green-500/20 flex items-center justify-center">
+                      <CheckCircle className="w-10 h-10 text-green-400" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-green-400 mb-2">Signature Verified!</h3>
+                    <p className="text-gray-400 mb-6">Your digital signature has been recorded</p>
+
+                    <div className="glass p-4 rounded-xl inline-block mb-6">
+                      <p className="text-sm text-gray-400">Signature ID</p>
+                      <p className="font-mono font-bold">DSC-AP-2026-{Math.floor(Math.random() * 100000)}</p>
+                    </div>
+
+                    <motion.button
+                      onClick={() => setCurrentStep(3)}
+                      whileHover={{ scale: 1.02 }}
+                      className="w-full py-4 bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-bold rounded-xl flex items-center justify-center gap-2"
+                    >
+                      Continue to Officer Assignment
+                      <ArrowRight className="w-5 h-5" />
+                    </motion.button>
+                  </motion.div>
+                )}
+              </div>
+            </motion.div>
+          )}
+
+          {/* STEP 3: Smart Assignment */}
+          {currentStep === 3 && (
+            <motion.div
+              key="step3"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              className="max-w-6xl mx-auto"
+            >
+              <button
+                onClick={() => setCurrentStep(2)}
+                className="mb-6 flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                Back to signature
               </button>
 
               <div className="glass-strong p-8 rounded-3xl mb-6">
